@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign Up</title>
+  <style>
+    :root{
+      --bg:#313338; --panel:#2b2d31; --panel2:#1e1f22;
+      --text:#f2f3f5; --muted:#b5bac1; --line:#3f4147;
+      --btn:#5865f2; --btnH:#4752c4; --ok:#23a55a; --err:#f23f43;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+      background:radial-gradient(1200px 800px at 20% 10%, #3a3c43 0%, var(--bg) 60%);
+      color:var(--text); font-family:system-ui,Segoe UI,Roboto,Arial;
+    }
+    .card{
+      width:min(520px,92vw); background:var(--panel); border:1px solid var(--line);
+      border-radius:10px; box-shadow:0 20px 60px rgba(0,0,0,.35);
+      overflow:hidden;
+    }
+    .head{padding:18px;border-bottom:1px solid var(--line)}
+    .head h1{margin:0;font-size:20px}
+    .head p{margin:6px 0 0;color:var(--muted);font-size:13px}
+    .body{padding:18px}
+    label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px}
+    input,select{
+      width:100%; padding:11px 12px; border-radius:8px; border:1px solid var(--line);
+      background:var(--panel2); color:var(--text); outline:none;
+    }
+    input:focus,select:focus{border-color:var(--btn); box-shadow:0 0 0 3px rgba(88,101,242,.15)}
+    .row{margin-bottom:12px}
+    .actions{display:flex; gap:10px; margin-top:12px}
+    button{border:0;border-radius:8px;padding:11px 14px;font-weight:700;cursor:pointer}
+    .primary{background:var(--btn);color:#fff;flex:1}
+    .primary:hover{background:var(--btnH)}
+    .ghost{background:transparent;color:var(--muted);border:1px solid var(--line)}
+    .msg{display:none;margin-top:10px;padding:10px 12px;border-radius:8px;font-size:13px}
+    .ok{background:rgba(35,165,90,.12);border:1px solid rgba(35,165,90,.35);color:#d8ffe9}
+    .err{background:rgba(242,63,67,.12);border:1px solid rgba(242,63,67,.35);color:#ffd6d6}
+    .footer{margin-top:10px;font-size:12px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="head">
+      <h1>Create an account</h1>
+      <p>UI demo only. Data is not sent anywhere.</p>
+    </div>
+
+    <div class="body">
+      <form id="f">
+        <div class="row">
+          <label>Email</label>
+          <input type="email" placeholder="name@example.com" required>
+        </div>
+
+        <div class="row">
+          <label>Username</label>
+          <input type="text" minlength="3" placeholder="username" required>
+        </div>
+
+        <div class="row">
+          <label>Password (demo)</label>
+          <input type="password" minlength="8" placeholder="****" required>
+        </div>
+
+        <div class="row">
+          <label>Consent</label>
+          <select id="consent" required>
+            <option value="">Choose…</option>
+            <option value="yes">I agree</option>
+            <option value="no">I do not agree</option>
+          </select>
+        </div>
+
+        <div class="actions">
+          <button class="primary" type="submit">Continue</button>
+          <button class="ghost" type="button" onclick="f.reset()">Reset</button>
+        </div>
+
+        <div id="ok" class="msg ok"></div>
+        <div id="er" class="msg err"></div>
+
+        <div class="footer">
+          Already have an account? <a href="#" onclick="return false;">Log in</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+<script>
+const f=document.getElementById('f'), ok=document.getElementById('ok'), er=document.getElementById('er');
+f.addEventListener('submit',e=>{
+  e.preventDefault();
+  ok.style.display=er.style.display='none';
+  if(document.getElementById('consent').value!=='yes'){
+    er.textContent='You must agree to continue.';
+    er.style.display='block';
+    return;
+  }
+  ok.textContent='Success (demo only). Nothing was sent or saved.';
+  ok.style.display='block';
+});
+</script>
+</body>
+</html>
