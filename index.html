@@ -1,71 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Sign Up</title>
+  <meta charset="UTF-8">
+  <title>Create an account</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #5865F2;
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-<style>
-body {
-  background-color: #36393f;
-  font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-}
+    .card {
+      background: #2b2d31;
+      width: 420px;
+      padding: 32px;
+      border-radius: 6px;
+      color: #fff;
+      box-shadow: 0 0 40px rgba(0,0,0,0.6);
+    }
 
-.container {
-  background-color: #2f3136;
-  padding: 30px;
-  width: 320px;
-  border-radius: 8px;
-  color: white;
-}
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
 
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
+    p {
+      text-align: center;
+      color: #b5bac1;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
 
-input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 12px;
-  border-radius: 4px;
-  border: none;
-  background: #202225;
-  color: white;
-}
+    label {
+      font-size: 12px;
+      color: #b5bac1;
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
 
-button {
-  width: 100%;
-  padding: 10px;
-  background: #5865F2;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
+    input {
+      width: 100%;
+      padding: 10px;
+      background: #1e1f22;
+      border: 1px solid #1e1f22;
+      border-radius: 3px;
+      color: white;
+      font-size: 14px;
+    }
 
-button:hover {
-  background: #4752c4;
-}
-</style>
+    input:focus {
+      outline: none;
+      border-color: #5865F2;
+    }
+
+    button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 12px;
+      background: #5865F2;
+      border: none;
+      border-radius: 3px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #4752c4;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 12px;
+      color: #949ba4;
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="container">
-  <h2>Create Account</h2>
+  <div class="card">
+    <h1>Create an account</h1>
+    <p>Welcome! We're happy to see you.</p>
 
-  <form action="https://formspree.io/f/mqekqdqq" method="POST">
-    <input type="text" name="name" placeholder="Name" required>
-    <input type="email" name="email" placeholder="Email" required>
-    <input type="text" name="username" placeholder="Username" required>
-    <button type="submit">Sign Up</button>
-  </form>
-</div>
+    <label>EMAIL</label>
+    <input type="email" placeholder="example@email.com">
+
+    <label>USERNAME</label>
+    <input type="text" placeholder="username">
+
+    <label>PASSWORD</label>
+    <input type="password" placeholder="**">
+
+    <button>Create Account</button>
+
+    <div class="footer">
+      Already have an account? <span style="color:#5865F2">Login
+</span>
+    </div>
+  </div>
 
 </body>
 </html>
