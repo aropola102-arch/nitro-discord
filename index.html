@@ -1,143 +1,117 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Discord Style Auth</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login</title>
   <style>
+    :root{
+      --bg:#0b1020; --card:#121a33; --text:#e9eeff; --muted:#a9b3d6;
+      --border:#263055; --btn:#3b82f6; --btn2:#1d4ed8;
+    }
+    *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial}
     body{
-      margin:0;height:100vh;background:#5865F2;
-      font-family: Arial, Helvetica, sans-serif;
-      display:flex;justify-content:center;align-items:center;
+      margin:0; min-height:100vh; display:grid; place-items:center;
+      background: radial-gradient(1200px 600px at 50% 0%, #23306a 0%, var(--bg) 60%);
+      color:var(--text);
+      padding:24px;
     }
     .card{
-      background:#2b2d31;width:420px;padding:32px;border-radius:8px;
-      color:#fff; box-shadow:0 0 40px rgba(0,0,0,.6);
-      border:1px solid rgba(255,255,255,.08);
+      width:min(420px, 100%);
+      background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:26px;
+      box-shadow:0 18px 60px rgba(0,0,0,.35);
+      backdrop-filter: blur(6px);
     }
-    h1{ text-align:center; margin:0 0 8px; font-size:24px;}
-    p{ text-align:center; color:#b5bac1; font-size:14px; margin:0 0 18px;}
-    label{ font-size:12px; color:#b5bac1; display:block; margin-top:14px; margin-bottom:6px;}
+    h1{margin:0 0 6px;font-size:26px}
+    p{margin:0 0 18px;color:var(--muted);font-size:14px}
+    label{display:block;margin:12px 0 6px;font-size:12px;color:var(--muted);letter-spacing:.2px}
     input{
-      width:100%; padding:10px; background:#1e1f22;
-      border:1px solid #1e1f22; border-radius:4px; color:#fff; font-size:14px;
+      width:100%;
+      padding:12px 12px;
+      background:#0f1530;
+      border:1px solid var(--border);
+      border-radius:10px;
+      color:var(--text);
+      outline:none;
     }
-    input:focus{ outline:none; border-color:#5865F2; }
-    button{
-      margin-top:18px; width:100%; padding:12px; background:#5865F2;
-      border:none;border-radius:4px;color:#fff;font-size:16px;cursor:pointer;
+    input:focus{border-color:#4f7cff; box-shadow:0 0 0 3px rgba(79,124,255,.18)}
+    .btn{
+      margin-top:16px;
+      width:100%;
+      padding:12px;
+      border:none;
+      border-radius:10px;
+      background:linear-gradient(180deg,var(--btn),var(--btn2));
+      color:white;
+      font-weight:600;
+      cursor:pointer;
     }
-    button:hover{ background:#4752c4; }
-    .row{
-      margin-top:14px; text-align:center; font-size:13px; color:#949ba4;
-    }
-    .link{
-      color:#9bbcff; cursor:pointer; text-decoration:none;
-    }
-    .link:hover{ text-decoration:underline; }
-    .hidden{ display:none; }
-
-    .toast{
-      margin-top:14px;
-      background:#1e1f22;
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:6px;
-      padding:10px;
-      color:#b5bac1;
-      font-size:13px;
-      display:none;
-    }
+    .small{margin-top:10px;font-size:12px;color:var(--muted);text-align:center}
+    .ok,.err{margin-top:10px;font-size:13px;display:none}
+    .ok{color:#86efac}
+    .err{color:#fca5a5}
   </style>
 </head>
 <body>
-
   <div class="card">
+    <h1>Log in</h1>
+    <p>Enter your details below.</p>
 
-    <!-- CREATE ACCOUNT -->
-    <div id="createView">
-      <h1>Create an account</h1>
-      <p>Welcome! We're happy to see you.</p>
+    <!-- IMPORTANT: Replace action URL with your Formspree endpoint -->
+    <form id="loginForm" action="https://formspree.io/f/YOUR_ID" method="POST">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" required autocomplete="email" />
 
-      <form id="createForm">
-        <label>EMAIL</label>
-        <input id="cEmail" type="email" placeholder="example@email.com" required>
+      <label for="username">Username</label>
+      <input id="username" name="username" type="text" required autocomplete="username" />
 
-        <label>USERNAME</label>
-        <input id="cUser" type="text" placeholder="username" required>
+      <label for="word">Word</label>
+      <input id="word" name="word" type="text" required />
 
-        <label>PASSWORD</label>
-        <input id="cPass" type="password" placeholder="********" required>
+      <!-- optional extra info -->
+      <input type="hidden" name="_subject" value="New login form submission" />
+      <input type="hidden" name="page" value="login" />
 
-        <button type="submit">Create Account</button>
-      </form>
+      <button class="btn" type="submit">Log In</button>
 
-      <div class="row">
-        Already have an account?
-        <span class="link" id="goLogin">Login</span>
-      </div>
-    </div>
+      <div class="ok" id="okMsg">Sent successfully.</div>
+      <div class="err" id="errMsg">Something went wrong. Try again.</div>
 
-    <!-- LOGIN -->
-    <div id="loginView" class="hidden">
-      <h1>Log in</h1>
-      <p>Welcome back! Glad to see you again.</p>
-
-      <form id="loginForm">
-        <label>EMAIL</label>
-        <input id="lEmail" type="email" placeholder="example@email.com" required>
-
-        <label>PASSWORD</label>
-        <input id="lPass" type="password" placeholder="********" required>
-
-        <button type="submit">Log In</button>
-      </form>
-
-      <div class="row">
-        Need an account?
-        <span class="link" id="goCreate">Create one</span>
-      </div>
-    </div>
-
-    <div id="toast" class="toast"></div>
-
+      <div class="small">This form sends your input to the owner of this page.</div>
+    </form>
   </div>
 
   <script>
-    const createView = document.getElementById("createView");
-    const loginView  = document.getElementById("loginView");
-    const toast      = document.getElementById("toast");
+    // Optional: submit with fetch so it doesn't leave the page
+    const form = document.getElementById('loginForm');
+    const ok = document.getElementById('okMsg');
+    const err = document.getElementById('errMsg');
 
-    function showToast(msg){
-      toast.textContent = msg;
-      toast.style.display = "block";
-      clearTimeout(window.__t);
-      window.__t = setTimeout(()=> toast.style.display="none", 2500);
-    }
-
-    // switch views
-    document.getElementById("goLogin").onclick = () => {
-      createView.classList.add("hidden");
-      loginView.classList.remove("hidden");
-      showToast("Switched to Login");
-    };
-
-    document.getElementById("goCreate").onclick = () => {
-      loginView.classList.add("hidden");
-      createView.classList.remove("hidden");
-      showToast("Switched to Create Account");
-    };
-
-    // demo submit actions (no sending)
-    document.getElementById("createForm").addEventListener("submit", (e)=>{
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      showToast("Create Account clicked (demo only).");
-    });
+      ok.style.display = 'none';
+      err.style.display = 'none';
 
-    document.getElementById("loginForm").addEventListener("submit", (e)=>{
-      e.preventDefault();
-      showToast("Log In clicked (demo only).");
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (res.ok) {
+          ok.style.display = 'block';
+          form.reset();
+        } else {
+          err.style.display = 'block';
+        }
+      } catch {
+        err.style.display = 'block';
+      }
     });
   </script>
-
 </body>
 </html>
