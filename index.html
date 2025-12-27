@@ -1,28 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sign Up</title>
+
 <style>
 body {
+  background-color: #36393f;
   font-family: Arial, sans-serif;
-  background: #f2f2f2;
-  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
 }
 
-form {
-  background: white;
-  padding: 20px;
-  width: 300px;
+.container {
+  background-color: #2f3136;
+  padding: 30px;
+  width: 320px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  color: white;
 }
 
-input, button {
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+input {
   width: 100%;
   padding: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  border-radius: 4px;
+  border: none;
+  background: #202225;
+  color: white;
 }
 
 button {
+  width: 100%;
+  padding: 10px;
   background: #5865F2;
   color: white;
   border: none;
+  border-radius: 4px;
   cursor: pointer;
 }
+
+button:hover {
+  background: #4752c4;
+}
 </style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Create Account</h2>
+
+  <form action="https://formspree.io/f/mqekqdqq" method="POST">
+    <input type="text" name="name" placeholder="Name" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="text" name="username" placeholder="Username" required>
+    <button type="submit">Sign Up</button>
+  </form>
+</div>
+
+</body>
+</html>
