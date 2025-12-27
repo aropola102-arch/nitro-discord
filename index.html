@@ -1,110 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Create an account</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Discord Style Auth</title>
   <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: #5865F2;
+    body{
+      margin:0;height:100vh;background:#5865F2;
       font-family: Arial, Helvetica, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      display:flex;justify-content:center;align-items:center;
     }
-
-    .card {
-      background: #2b2d31;
-      width: 420px;
-      padding: 32px;
-      border-radius: 6px;
-      color: #fff;
-      box-shadow: 0 0 40px rgba(0,0,0,0.6);
+    .card{
+      background:#2b2d31;width:420px;padding:32px;border-radius:8px;
+      color:#fff; box-shadow:0 0 40px rgba(0,0,0,.6);
+      border:1px solid rgba(255,255,255,.08);
     }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 10px;
-      font-size: 24px;
+    h1{ text-align:center; margin:0 0 8px; font-size:24px;}
+    p{ text-align:center; color:#b5bac1; font-size:14px; margin:0 0 18px;}
+    label{ font-size:12px; color:#b5bac1; display:block; margin-top:14px; margin-bottom:6px;}
+    input{
+      width:100%; padding:10px; background:#1e1f22;
+      border:1px solid #1e1f22; border-radius:4px; color:#fff; font-size:14px;
     }
-
-    p {
-      text-align: center;
-      color: #b5bac1;
-      font-size: 14px;
-      margin-bottom: 20px;
+    input:focus{ outline:none; border-color:#5865F2; }
+    button{
+      margin-top:18px; width:100%; padding:12px; background:#5865F2;
+      border:none;border-radius:4px;color:#fff;font-size:16px;cursor:pointer;
     }
-
-    label {
-      font-size: 12px;
-      color: #b5bac1;
-      display: block;
-      margin-top: 15px;
-      margin-bottom: 5px;
+    button:hover{ background:#4752c4; }
+    .row{
+      margin-top:14px; text-align:center; font-size:13px; color:#949ba4;
     }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      background: #1e1f22;
-      border: 1px solid #1e1f22;
-      border-radius: 3px;
-      color: white;
-      font-size: 14px;
+    .link{
+      color:#9bbcff; cursor:pointer; text-decoration:none;
     }
+    .link:hover{ text-decoration:underline; }
+    .hidden{ display:none; }
 
-    input:focus {
-      outline: none;
-      border-color: #5865F2;
-    }
-
-    button {
-      margin-top: 25px;
-      width: 100%;
-      padding: 12px;
-      background: #5865F2;
-      border: none;
-      border-radius: 3px;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #4752c4;
-    }
-
-    .footer {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 12px;
-      color: #949ba4;
+    .toast{
+      margin-top:14px;
+      background:#1e1f22;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:6px;
+      padding:10px;
+      color:#b5bac1;
+      font-size:13px;
+      display:none;
     }
   </style>
 </head>
 <body>
 
   <div class="card">
-    <h1>Create an account</h1>
-    <p>Welcome! We're happy to see you.</p>
 
-    <label>EMAIL</label>
-    <input type="email" placeholder="example@email.com">
+    <!-- CREATE ACCOUNT -->
+    <div id="createView">
+      <h1>Create an account</h1>
+      <p>Welcome! We're happy to see you.</p>
 
-    <label>USERNAME</label>
-    <input type="text" placeholder="username">
+      <form id="createForm">
+        <label>EMAIL</label>
+        <input id="cEmail" type="email" placeholder="example@email.com" required>
 
-    <label>PASSWORD</label>
-    <input type="password" placeholder="**">
+        <label>USERNAME</label>
+        <input id="cUser" type="text" placeholder="username" required>
 
-    <button>Create Account</button>
+        <label>PASSWORD</label>
+        <input id="cPass" type="password" placeholder="********" required>
 
-    <div class="footer">
-      Already have an account? <span style="color:#5865F2">Login
-</span>
+        <button type="submit">Create Account</button>
+      </form>
+
+      <div class="row">
+        Already have an account?
+        <span class="link" id="goLogin">Login</span>
+      </div>
     </div>
+
+    <!-- LOGIN -->
+    <div id="loginView" class="hidden">
+      <h1>Log in</h1>
+      <p>Welcome back! Glad to see you again.</p>
+
+      <form id="loginForm">
+        <label>EMAIL</label>
+        <input id="lEmail" type="email" placeholder="example@email.com" required>
+
+        <label>PASSWORD</label>
+        <input id="lPass" type="password" placeholder="********" required>
+
+        <button type="submit">Log In</button>
+      </form>
+
+      <div class="row">
+        Need an account?
+        <span class="link" id="goCreate">Create one</span>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
   </div>
+
+  <script>
+    const createView = document.getElementById("createView");
+    const loginView  = document.getElementById("loginView");
+    const toast      = document.getElementById("toast");
+
+    function showToast(msg){
+      toast.textContent = msg;
+      toast.style.display = "block";
+      clearTimeout(window.__t);
+      window.__t = setTimeout(()=> toast.style.display="none", 2500);
+    }
+
+    // switch views
+    document.getElementById("goLogin").onclick = () => {
+      createView.classList.add("hidden");
+      loginView.classList.remove("hidden");
+      showToast("Switched to Login");
+    };
+
+    document.getElementById("goCreate").onclick = () => {
+      loginView.classList.add("hidden");
+      createView.classList.remove("hidden");
+      showToast("Switched to Create Account");
+    };
+
+    // demo submit actions (no sending)
+    document.getElementById("createForm").addEventListener("submit", (e)=>{
+      e.preventDefault();
+      showToast("Create Account clicked (demo only).");
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", (e)=>{
+      e.preventDefault();
+      showToast("Log In clicked (demo only).");
+    });
+  </script>
 
 </body>
 </html>
