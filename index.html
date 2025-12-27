@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <title>نموذج موافقة</title>
+</head>
+<body>
+
+<h1>مشاركة معلومات بموافقتك</h1>
+
+<p>
+هذا الموقع يجمع المعلومات فقط بعد موافقتك.
+</p>
+
+<button onclick="showForm()">موافق</button>
+
+<div id="form" style="display:none; margin-top:20px;">
+  <form onsubmit="send(event)">
+    <label>اسمك:</label><br>
+    <input type="text" required><br><br>
+
+    <label>إيميلك:</label><br>
+    <input type="email" required><br><br>
+
+    <button type="submit">إرسال</button>
+  </form>
+
+  <div id="result"></div>
+</div>
+
+<script>
+function showForm() {
+  document.getElementById("form").style.display = "block";
+}
+
+function send(e) {
+  e.preventDefault();
+  document.getElementById("result").innerHTML =
+    "✅ تم استلام المعلومات بموافقتك";
+}
+</script>
+
+</body>
+</html>
