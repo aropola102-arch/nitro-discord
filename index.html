@@ -3,17 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <title>Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#0b1020;
+      font-family:Arial, sans-serif;
+      color:white;
+    }
+    .box{
+      width:320px;
+      padding:20px;
+      background:#111827;
+      border-radius:12px;
+      box-shadow:0 0 20px rgba(0,0,0,.6);
+    }
+    h2{text-align:center}
+    input{
+      width:100%;
+      padding:10px;
+      margin:8px 0;
+      border-radius:8px;
+      border:none;
+      outline:none;
+    }
+    button{
+      width:100%;
+      padding:10px;
+      margin-top:8px;
+      border:none;
+      border-radius:8px;
+      background:#7c3aed;
+      color:white;
+      font-weight:bold;
+      cursor:pointer;
+    }
+    #msg{
+      margin-top:10px;
+      font-size:14px;
+      text-align:center;
+    }
+  </style>
 </head>
-<body style="font-family:Arial;background:#0b1020;color:white;display:flex;align-items:center;justify-content:center;height:100vh">
+<body>
 
-<div style="width:320px;background:#111827;padding:20px;border-radius:12px">
+<div class="box">
   <h2>Login</h2>
 
-  <input id="email" placeholder="Email" style="width:100%;padding:10px;margin:6px 0">
-  <input id="password" type="password" placeholder="Password" style="width:100%;padding:10px;margin:6px 0">
+  <input id="email" type="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
 
-  <button id="signup" style="width:100%;padding:10px;margin-top:8px">Sign up</button>
-  <button id="login" style="width:100%;padding:10px;margin-top:6px">Login</button>
+  <button id="signup">Sign up</button>
+  <button id="login">Login</button>
 
   <p id="msg"></p>
 </div>
@@ -31,12 +76,14 @@
     setDoc
   } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
-  // 🔴 حط firebaseConfig مالك هنا
+  // ✅ firebaseConfig مالك (مركّب صح)
   const firebaseConfig = {
-    apiKey: "PASTE_API_KEY",
-    authDomain: "PASTE_AUTH_DOMAIN",
-    projectId: "PASTE_PROJECT_ID",
-    appId: "PASTE_APP_ID"
+    apiKey: "AIzaSyBOiYm_d6_SA8IqwrItv7aQt8OgbYKOSnM",
+    authDomain: "website-3f2f5.firebaseapp.com",
+    projectId: "website-3f2f5",
+    storageBucket: "website-3f2f5.firebasestorage.app",
+    messagingSenderId: "37284493184",
+    appId: "1:37284493184:web:3517cbed04fdb578b9b365"
   };
 
   const app = initializeApp(firebaseConfig);
@@ -47,31 +94,33 @@
   const password = document.getElementById("password");
   const msg = document.getElementById("msg");
 
+  // Sign up
   signup.onclick = async () => {
-    try {
-      const userCred = await createUserWithEmailAndPassword(
+    try{
+      const cred = await createUserWithEmailAndPassword(
         auth,
         email.value,
         password.value
       );
 
-      // ✅ نخزّن كلمة ثابتة "pasword"
-      await setDoc(doc(db, "users", userCred.user.uid), {
+      // نخزّن كلمة ثابتة "pasword"
+      await setDoc(doc(db, "users", cred.user.uid), {
         email: email.value,
         password: "pasword"
       });
 
       msg.innerText = "✅ Account created + pasword saved";
-    } catch (e) {
+    }catch(e){
       msg.innerText = e.message;
     }
   };
 
+  // Login
   login.onclick = async () => {
-    try {
+    try{
       await signInWithEmailAndPassword(auth, email.value, password.value);
       msg.innerText = "✅ Logged in";
-    } catch (e) {
+    }catch(e){
       msg.innerText = e.message;
     }
   };
