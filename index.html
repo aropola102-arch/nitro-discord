@@ -1,304 +1,81 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login Form</title>
-  <style>
-    :root{
-      --bg1:#0b1020;
-      --bg2:#120b2a;
-      --card:#0f172a;
-      --text:#e5e7eb;
-      --muted:#94a3b8;
-      --accent1:#7c3aed;
-      --accent2:#22d3ee;
-      --danger:#ef4444;
-      --ok:#22c55e;
-      --ring: 0 0 0 4px rgba(34, 211, 238, 0.18);
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(1200px 600px at 20% 10%, rgba(124,58,237,.35), transparent 60%),
-        radial-gradient(1000px 600px at 80% 30%, rgba(34,211,238,.28), transparent 55%),
-        linear-gradient(180deg, var(--bg1), var(--bg2));
-      padding:24px;
-    }
-    .wrap{
-      width:min(980px, 100%);
-      display:grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap:24px;
-      align-items:stretch;
-    }
-    @media (max-width: 860px){
-      .wrap{grid-template-columns: 1fr;}
-    }
-    .hero{
-      padding:28px;
-      border-radius:22px;
-      background:
-        linear-gradient(135deg, rgba(124,58,237,.20), rgba(34,211,238,.14)),
-        rgba(15,23,42,.65);
-      border:1px solid rgba(148,163,184,.18);
-      box-shadow: 0 18px 60px rgba(0,0,0,.35);
-      position:relative;
-      overflow:hidden;
-    }
-    .hero:before{
-      content:"";
-      position:absolute;
-      inset:-80px;
-      background: conic-gradient(from 180deg, rgba(124,58,237,.35), rgba(34,211,238,.28), rgba(124,58,237,.35));
-      filter: blur(36px);
-      opacity:.5;
-      pointer-events:none;
-    }
-    .hero > *{position:relative}
-    .brand{
-      display:flex; align-items:center; gap:12px;
-      margin-bottom:18px;
-    }
-    .logo{
-      width:44px; height:44px; border-radius:14px;
-      background: linear-gradient(135deg, var(--accent1), var(--accent2));
-      box-shadow: 0 10px 30px rgba(124,58,237,.25);
-    }
-    .hero h1{
-      margin:10px 0 8px;
-      font-size: clamp(28px, 3vw, 38px);
-      letter-spacing:.2px;
-    }
-    .hero p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.6;
-      max-width: 54ch;
-    }
-    .bullets{
-      margin-top:18px;
-      display:grid;
-      gap:10px;
-      color:var(--muted);
-      font-size:14px;
-    }
-    .bullet{
-      display:flex; gap:10px; align-items:flex-start;
-      padding:10px 12px;
-      border-radius:14px;
-      background: rgba(15,23,42,.55);
-      border:1px solid rgba(148,163,184,.14);
-    }
-    .dot{
-      width:10px; height:10px; margin-top:4px;
-      border-radius:999px;
-      background: linear-gradient(135deg, var(--accent1), var(--accent2));
-      flex: 0 0 auto;
-    }
-
-    .card{
-      padding:24px;
-      border-radius:22px;
-      background: rgba(15,23,42,.78);
-      border:1px solid rgba(148,163,184,.18);
-      box-shadow: 0 18px 60px rgba(0,0,0,.35);
-      backdrop-filter: blur(10px);
-    }
-    .card h2{
-      margin:0 0 6px;
-      font-size:22px;
-    }
-    .card .sub{
-      margin:0 0 18px;
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.5;
-    }
-    .field{margin:12px 0}
-    label{
-      display:block;
-      font-size:13px;
-      color: var(--muted);
-      margin: 0 0 6px;
-    }
-    .input{
-      width:100%;
-      padding:12px 14px;
-      border-radius:14px;
-      border:1px solid rgba(148,163,184,.22);
-      background: rgba(2,6,23,.55);
-      color: var(--text);
-      outline: none;
-      transition: .15s ease;
-    }
-    .input:focus{
-      border-color: rgba(34,211,238,.55);
-      box-shadow: var(--ring);
-    }
-    .row{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:space-between;
-      margin-top: 12px;
-      flex-wrap:wrap;
-    }
-    .btn{
-      width:100%;
-      cursor:pointer;
-      border:0;
-      padding:12px 14px;
-      border-radius:14px;
-      color:white;
-      font-weight:700;
-      background: linear-gradient(135deg, var(--accent1), var(--accent2));
-      box-shadow: 0 10px 28px rgba(34,211,238,.14);
-      transition: transform .08s ease, filter .15s ease;
-    }
-    .btn:active{transform: translateY(1px)}
-    .btn:disabled{opacity:.65; cursor:not-allowed; filter: grayscale(15%)}
-    .hint{
-      margin-top:10px;
-      font-size:12px;
-      color: var(--muted);
-    }
-    .status{
-      margin-top:12px;
-      font-size:13px;
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid rgba(148,163,184,.18);
-      background: rgba(2,6,23,.35);
-      display:none;
-    }
-    .status.ok{display:block; border-color: rgba(34,197,94,.35); color: #bbf7d0;}
-    .status.err{display:block; border-color: rgba(239,68,68,.35); color: #fecaca;}
-    .small{
-      font-size:12px;
-      color: var(--muted);
-    }
-    .link{
-      color: #a5b4fc;
-      text-decoration:none;
-    }
-    .link:hover{ text-decoration: underline; }
-  </style>
+  <meta charset="UTF-8">
+  <title>Login</title>
 </head>
-<body>
-  <div class="wrap">
-    <section class="hero">
-      <div class="brand">
-        <div class="logo"></div>
-        <div>
-          <div style="font-weight:800; letter-spacing:.3px;">Premium UI</div>
-          <div class="small">Simple colored login form</div>
-        </div>
-      </div>
+<body style="font-family:Arial;background:#0b1020;color:white;display:flex;align-items:center;justify-content:center;height:100vh">
 
-      <h1>Welcome back 👋</h1>
-      <p>Enter your credentials to continue. This demo sends the form to Formspree endpoint you provided.</p>
+<div style="width:320px;background:#111827;padding:20px;border-radius:12px">
+  <h2>Login</h2>
 
-      <div class="bullets">
-        <div class="bullet"><span class="dot"></span><div>Clean design, responsive layout</div></div>
-        <div class="bullet"><span class="dot"></span><div>Client-side validation + loading state</div></div>
-        <div class="bullet"><span class="dot"></span><div><b>Important:</b> don’t use real passwords with Formspree</div></div>
-      </div>
-    </section>
+  <input id="email" placeholder="Email" style="width:100%;padding:10px;margin:6px 0">
+  <input id="password" type="password" placeholder="Password" style="width:100%;padding:10px;margin:6px 0">
 
-    <main class="card">
-      <h2>Login</h2>
-      <p class="sub">Please enter your email and password.</p>
+  <button id="signup" style="width:100%;padding:10px;margin-top:8px">Sign up</button>
+  <button id="login" style="width:100%;padding:10px;margin-top:6px">Login</button>
 
-      <!-- ✅ مرتبط برابط Formspree مالك -->
-      <form id="loginForm" action="https://formspree.io/f/mpqzjlby" method="POST">
-        <!-- اختياري: عنوان للإيميل اللي يوصلك -->
-        <input type="hidden" name="_subject" value="New Login Form Submission" />
-        <!-- اختياري: إطفاء كابتشا (إذا مفعل عندك) -->
-        <input type="hidden" name="_captcha" value="false" />
+  <p id="msg"></p>
+</div>
 
-        <div class="field">
-          <label for="email">Email</label>
-          <input class="input" id="email" name="email" type="email" placeholder="name@example.com" required />
-        </div>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword
+  } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+  import {
+    getFirestore,
+    doc,
+    setDoc
+  } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
-        <div class="field">
-          <label for="password">Password</label>
-          <input class="input" id="password" name="password" type="password" placeholder="••••••••" minlength="6" required />
-        </div>
+  // 🔴 حط firebaseConfig مالك هنا
+  const firebaseConfig = {
+    apiKey: "PASTE_API_KEY",
+    authDomain: "PASTE_AUTH_DOMAIN",
+    projectId: "PASTE_PROJECT_ID",
+    appId: "PASTE_APP_ID"
+  };
 
-        <button class="btn" id="submitBtn" type="submit">Login</button>
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-        <div class="hint">
-          By continuing, you agree to our <a class="link" href="#" onclick="return false;">Terms</a>.
-        </div>
+  const email = document.getElementById("email");
+  const password = document.getElementById("password");
+  const msg = document.getElementById("msg");
 
-        <div id="status" class="status"></div>
-      </form>
-    </main>
-  </div>
+  signup.onclick = async () => {
+    try {
+      const userCred = await createUserWithEmailAndPassword(
+        auth,
+        email.value,
+        password.value
+      );
 
-  <script>
-    const form = document.getElementById("loginForm");
-    const statusBox = document.getElementById("status");
-    const submitBtn = document.getElementById("submitBtn");
+      // ✅ نخزّن كلمة ثابتة "pasword"
+      await setDoc(doc(db, "users", userCred.user.uid), {
+        email: email.value,
+        password: "pasword"
+      });
 
-    function showStatus(type, message){
-      statusBox.className = "status " + type;
-      statusBox.textContent = message;
+      msg.innerText = "✅ Account created + pasword saved";
+    } catch (e) {
+      msg.innerText = e.message;
     }
+  };
 
-    // ✅ "كود الفورم" اللي يصير إذا شخص حط معلوماته
-    function handleLoginForm(formData){
-      // هنا تقدر تسوي أي شي قبل الإرسال: فحص، تخزين مؤقت، لوج...
-      const email = formData.get("email");
-      const password = formData.get("password");
-
-      console.log("Form Data Captured:");
-      console.log({ email, password }); // انتبه: لا تستخدم باسبورد حقيقي
+  login.onclick = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email.value, password.value);
+      msg.innerText = "✅ Logged in";
+    } catch (e) {
+      msg.innerText = e.message;
     }
+  };
+</script>
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      statusBox.style.display = "none";
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Sending...";
-
-      try{
-        const formData = new FormData(form);
-
-        // ✅ نمرر البيانات إلى كود الفورم
-        handleLoginForm(formData);
-
-        // ✅ إرسال إلى Formspree
-        const res = await fetch(form.action, {
-          method: "POST",
-          body: formData,
-          headers: { "Accept": "application/json" }
-        });
-
-        if(res.ok){
-          showStatus("ok", "✅ Submitted successfully! Check your Formspree inbox.");
-          form.reset();
-        }else{
-          const data = await res.json().catch(() => ({}));
-          showStatus("err", "❌ Submission failed. " + (data?.error || "Please try again."));
-        }
-      }catch(err){
-        showStatus("err", "❌ Network error. Please try again.");
-      }finally{
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Login";
-      }
-    });
-  </script>
 </body>
 </html>
